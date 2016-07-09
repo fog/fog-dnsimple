@@ -3,9 +3,7 @@ require "rake/testtask"
 
 task :default => :test
 
-Rake::TestTask.new do |t|
-  t.libs << "lib"
-  t.libs << "spec"
-  t.pattern = "spec/**/*_spec.rb"
+mock = ENV['FOG_MOCK'] || 'true'
+task :test do
+  sh("export FOG_MOCK=#{mock} && bundle exec shindont")
 end
-
