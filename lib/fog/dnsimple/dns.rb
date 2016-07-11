@@ -4,7 +4,7 @@ require "fog/json"
 module Fog
   module DNS
     class Dnsimple < Fog::Service
-      recognizes :dnsimple_email, :dnsimple_password, :dnsimple_token, :dnsimple_domain, :dnsimple_url, :host, :path, :port, :scheme, :persistent
+      recognizes :dnsimple_email, :dnsimple_password, :dnsimple_token, :dnsimple_domain, :dnsimple_url
 
       model_path 'fog/dnsimple/models/dns'
       model       :record
@@ -59,18 +59,23 @@ module Fog
           @dnsimple_password  = options[:dnsimple_password]
           @dnsimple_token = options[:dnsimple_token]
           @dnsimple_domain = options[:dnsimple_domain]
-          @connection_options = options[:connection_options] || {}
+
           if options[:dnsimple_url]
             uri = URI.parse(options[:dnsimple_url])
             options[:host]    = uri.host
             options[:port]    = uri.port
             options[:scheme]  = uri.scheme
           end
-          @host       = options[:host]        || "api.dnsimple.com"
-          @persistent = options[:persistent]  || false
-          @port       = options[:port]        || 443
-          @scheme     = options[:scheme]      || 'https'
-          @connection = Fog::Core::Connection.new("#{@scheme}://#{@host}:#{@port}", @persistent, @connection_options)
+
+          connection_options = options[:connection_options] || {}
+          connection_options[:headers] ||= {}
+          connection_options[:headers]["User-Agent"] = "#{Fog::Core::Connection.user_agents} fog-dnsimple/#{Fog::Dnsimple::VERSION}"
+
+          host       = options[:host]        || "api.dnsimple.com"
+          persistent = options[:persistent]  || false
+          port       = options[:port]        || 443
+          scheme     = options[:scheme]      || 'https'
+          @connection = Fog::Core::Connection.new("#{scheme}://#{host}:#{port}", persistent, connection_options)
         end
 
         def reload

@@ -61,6 +61,7 @@ dns = Fog::DNS.new({
   dnsimple_password: "...",
 
   # API v1 domain-token authentication
+  dnsimple_domain: "example.com",
   dnsimple_token: "...",
 })
 ```
