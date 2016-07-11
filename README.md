@@ -2,6 +2,16 @@
 
 [![Build Status](https://travis-ci.org/fog/fog-dnsimple.svg?branch=master)](https://travis-ci.org/fog/fog-dnsimple)
 
+
+## API Version
+
+This library currently uses the [DNSimple API v1](https://developer.dnsimple.com/v1/) 
+and it is fully compatible with the legacy implementation bundled with the `fog` gem.
+
+In other words, this is a drop-in replacement. Please note that the `dnsimple` provider
+will eventually be removed from the `fog` gem in favor of this fog-specific module.
+
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -17,6 +27,7 @@ And then execute:
 Or install it yourself as:
 
     $ gem install fog-dnsimple
+
 
 ## Usage
 
