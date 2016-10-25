@@ -45,11 +45,11 @@ This can then be used like other [Fog DNS](http://fog.io/dns/) providers.
 
 ```ruby
 zone = dns.zones.create(
-  domain: "example.com
+  domain: "example.com"
 )
 record = zone.records.create(
-  name: "example.com,
-  value: "1.2.3.4,
+  name: "foo",
+  value: "1.2.3.4",
   type: "A"
 )
 ```
