@@ -4,7 +4,7 @@ require "fog/json"
 module Fog
   module DNS
     class Dnsimple < Fog::Service
-      recognizes :dnsimple_email, :dnsimple_password, :dnsimple_token, :dnsimple_domain, :dnsimple_url
+      recognizes :dnsimple_token, :dnsimple_url
 
       model_path 'fog/dnsimple/models/dns'
       model       :record
@@ -27,8 +27,8 @@ module Fog
         def self.data
           @data ||= Hash.new do |hash, key|
             hash[key] = {
-                :domains => [],
-                :records => {}
+                domains: [],
+                records: {}
             }
           end
         end
@@ -37,23 +37,21 @@ module Fog
           @data = nil
         end
 
-        def initialize(options={})
-          @dnsimple_email = options[:dnsimple_email]
+        def initialize(options = {})
           @dnsimple_token = options[:dnsimple_token]
         end
 
         def data
-          self.class.data[@dnsimple_email]
+          self.class.data[@dnsimple_token]
         end
 
         def reset_data
-          self.class.data.delete(@dnsimple_email)
+          self.class.data.delete(@dnsimple_token)
         end
       end
 
       class Real
         def initialize(options={})
-          @dnsimple_email = options[:dnsimple_email]
           @dnsimple_token = options[:dnsimple_token]
 
           if options[:dnsimple_url]
@@ -81,8 +79,8 @@ module Fog
         def request(params)
           params[:headers] ||= {}
 
-          if(@dnsimple_token)
-            params[:headers].merge!("X-DNSimple-Token" => "#{@dnsimple_email}:#{@dnsimple_token}")
+          if @dnsimple_token
+            params[:headers].merge!("Authorization" => "Bearer #{@dnsimple_token}")
           else
             raise ArgumentError.new("Insufficient credentials to properly authenticate!")
           end
