@@ -39,7 +39,6 @@ module Fog
 
         def initialize(options={})
           @dnsimple_email = options[:dnsimple_email]
-          @dnsimple_password  = options[:dnsimple_password]
           @dnsimple_token = options[:dnsimple_token]
         end
 
@@ -55,7 +54,6 @@ module Fog
       class Real
         def initialize(options={})
           @dnsimple_email = options[:dnsimple_email]
-          @dnsimple_password  = options[:dnsimple_password]
           @dnsimple_token = options[:dnsimple_token]
 
           if options[:dnsimple_url]
@@ -83,10 +81,7 @@ module Fog
         def request(params)
           params[:headers] ||= {}
 
-          if(@dnsimple_password)
-            key = "#{@dnsimple_email}:#{@dnsimple_password}"
-            params[:headers].merge!("Authorization" => "Basic " + Base64.encode64(key).gsub("\n",''))
-          elsif(@dnsimple_token)
+          if(@dnsimple_token)
             params[:headers].merge!("X-DNSimple-Token" => "#{@dnsimple_email}:#{@dnsimple_token}")
           else
             raise ArgumentError.new("Insufficient credentials to properly authenticate!")
