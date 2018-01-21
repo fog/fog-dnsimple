@@ -41,7 +41,6 @@ module Fog
           @dnsimple_email = options[:dnsimple_email]
           @dnsimple_password  = options[:dnsimple_password]
           @dnsimple_token = options[:dnsimple_token]
-          @dnsimple_domain = options[:dnsimple_domain]
         end
 
         def data
@@ -58,7 +57,6 @@ module Fog
           @dnsimple_email = options[:dnsimple_email]
           @dnsimple_password  = options[:dnsimple_password]
           @dnsimple_token = options[:dnsimple_token]
-          @dnsimple_domain = options[:dnsimple_domain]
 
           if options[:dnsimple_url]
             uri = URI.parse(options[:dnsimple_url])
@@ -74,7 +72,7 @@ module Fog
           host       = options[:host]        || "api.dnsimple.com"
           persistent = options[:persistent]  || false
           port       = options[:port]        || 443
-          scheme     = options[:scheme]      || 'https'
+          scheme     = options[:scheme]      || "https"
           @connection = Fog::Core::Connection.new("#{scheme}://#{host}:#{port}", persistent, connection_options)
         end
 
@@ -89,11 +87,7 @@ module Fog
             key = "#{@dnsimple_email}:#{@dnsimple_password}"
             params[:headers].merge!("Authorization" => "Basic " + Base64.encode64(key).gsub("\n",''))
           elsif(@dnsimple_token)
-            if(@dnsimple_domain)
-              params[:headers].merge!("X-DNSimple-Domain-Token" => @dnsimple_token)
-            else
-              params[:headers].merge!("X-DNSimple-Token" => "#{@dnsimple_email}:#{@dnsimple_token}")
-            end
+            params[:headers].merge!("X-DNSimple-Token" => "#{@dnsimple_email}:#{@dnsimple_token}")
           else
             raise ArgumentError.new("Insufficient credentials to properly authenticate!")
           end
@@ -102,8 +96,8 @@ module Fog
               "Content-Type" => "application/json"
           )
 
-          version = params.delete(:version) || 'v1'
-          params[:path] = File.join('/', version, params[:path])
+          version = params.delete(:version) || "v2"
+          params[:path] = File.join("/", version, params[:path])
 
           response = @connection.request(params)
 
