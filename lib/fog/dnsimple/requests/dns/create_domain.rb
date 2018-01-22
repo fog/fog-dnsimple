@@ -5,45 +5,40 @@ module Fog
         # Create a single domain in DNSimple in your account.
         #
         # ==== Parameters
-        # * name<~String> - domain name to host (ie example.com)
+        # * account_id<~String> - the account the domain belong to
+        # * domain_name<~String> - domain name to host (ie example.com)
         #
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~Hash>:
-        #     * 'domain'<~Hash> The representation of the domain.
-        def create_domain(name)
+        #     * "data"<~Hash> The representation of the domain.
+        def create_domain(account_id, domain_name)
           body = {
-            "domain" => {
-              "name" => name
-            }
+            "name" => domain_name
           }
 
           request(
-            :body     => Fog::JSON.encode(body),
-            :expects  => 201,
-            :method   => 'POST',
-            :path     => "/domains"
+            body:     Fog::JSON.encode(body),
+            expects:  201,
+            method:   "POST",
+            path:     "/#{account_id}/domains"
           )
         end
       end
 
       class Mock
-        def create_domain(name)
+        def create_domain(account_id, domain_name)
           body = {
-            "domain" =>  {
+            "data" =>  {
               "id"                 => Fog::Mock.random_numbers(1).to_i,
-              "user_id"            => 1,
+              "account_id"         => account_id,
               "registrant_id"      => nil,
-              "name"               => name,
-              "unicode_name"       => name,
+              "name"               => domain_name,
+              "unicode_name"       => domain_name,
               "token"              => "4fIFYWYiJayvL2tkf_mkBkqC4L+4RtYqDA",
               "state"              => "registered",
-              "language"           => nil,
-              "lockable"           => true,
               "auto_renew"         => nil,
-              "whois_protected"    => false,
-              "record_count"       => 0,
-              "service_count"      => 0,
+              "private_whois"     => false,
               "expires_on"         => Date.today + 365,
               "created_at"         => Time.now.iso8601,
               "updated_at"         => Time.now.iso8601,

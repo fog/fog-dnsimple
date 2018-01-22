@@ -9,24 +9,25 @@ module Fog
         # DNSimple this will not delete the domain from the registry.
         #
         # ==== Parameters
-        # * domain<~String> - domain name or numeric ID
+        # * account_id<~String> - the account the domain belong to
+        # * domain_id<~String> - domain name or numeric ID
         #
-        def delete_domain(domain)
+        def delete_domain(account_id, domain_id)
           request(
-            :expects  => 200,
-            :method   => 'DELETE',
-            :path     => "/domains/#{domain}"
+            expects:  204,
+            method:   "DELETE",
+            path:     "/#{account_id}/domains/#{domain_id}"
           )
         end
       end
 
       class Mock
-        def delete_domain(name)
-          self.data[:records].delete name
-          self.data[:domains].reject! { |domain| domain["domain"]["name"] == name }
+        def delete_domain(_account_id, domain_id)
+          self.data[:records].delete(domain_id)
+          self.data[:domains].reject! { |domain| domain["data"]["name"] == domain_id }
 
           response = Excon::Response.new
-          response.status = 200
+          response.status = 204
           response
         end
       end

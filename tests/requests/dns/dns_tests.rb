@@ -16,16 +16,16 @@ Shindo.tests('Fog::DNS[:dnsimple] | DNS requests', ['dnsimple', 'dns']) do
 
     test("create domain") do
       domain = generate_unique_domain
-      response = Fog::DNS[:dnsimple].create_domain(domain)
+      response = Fog::DNS[:dnsimple].create_domain(0, domain)
       if response.status == 201
-        @domain = response.body["domain"]
+        @domain = response.body["data"]
       end
 
       response.status == 201
     end
 
     test("get domain by id") do
-      response = Fog::DNS[:dnsimple].get_domain(@domain["id"])
+      response = Fog::DNS[:dnsimple].get_domain(0, @domain["id"])
       response.status == 200
     end
 
@@ -113,8 +113,8 @@ Shindo.tests('Fog::DNS[:dnsimple] | DNS requests', ['dnsimple', 'dns']) do
     end
 
     test("delete domain") do
-      response = Fog::DNS[:dnsimple].delete_domain(@domain["name"])
-      response.status == 200
+      response = Fog::DNS[:dnsimple].delete_domain(0, @domain["name"])
+      response.status == 204
     end
 
   end
