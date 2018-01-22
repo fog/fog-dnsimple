@@ -5,20 +5,21 @@ module Fog
         # Delete the record with the given ID for the given domain.
         #
         # ==== Parameters
-        # * domain<~String> - domain name or numeric ID
+        # * account_id<~String> - the account the domain belongs to
+        # * zone_name<~String> - zone name
         # * record_id<~String>
-        def delete_record(domain, record_id)
+        def delete_record(account_id, zone_name, record_id)
           request(
-            :expects  => 200,
-            :method   => "DELETE",
-            :path     => "/domains/#{domain}/records/#{record_id}"
+            expects:  204,
+            method:   "DELETE",
+            path:     "/#{account_id}/zones/#{zone_name}/records/#{record_id}"
           )
         end
       end
 
       class Mock
-        def delete_record(domain, record_id)
-          self.data[:records][domain].reject! { |record| record["record"]["id"] == record_id }
+        def delete_record(_account_id, zone_name, record_id)
+          self.data[:records][zone_name].reject! { |record| record["data"]["id"] == record_id }
 
           response = Excon::Response.new
           response.status = 200

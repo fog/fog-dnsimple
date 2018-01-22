@@ -5,7 +5,7 @@ module Fog
         # Create a new host in the specified zone
         #
         # ==== Parameters
-        # * domain<~String> - domain name or numeric ID
+        # * zone_name<~String> - zone name
         # * name<~String>
         # * type<~String>
         # * content<~String>
@@ -17,44 +17,41 @@ module Fog
         # * response<~Excon::Response>:
         #   * body<~Hash>:
         #     * 'record'<~Hash> The representation of the record.
-        def create_record(domain, name, type, content, options = {})
+        def create_record(account_id, zone_name, name, type, content, options = {})
           body = {
-            "record" => {
-              "name" => name,
-              "record_type" => type,
-              "content" => content
-            }
+            "name" => name,
+            "type" => type,
+            "content" => content
           }
-
-          body["record"].merge!(options)
+          body.merge!(options)
 
           request(
-            :body     => Fog::JSON.encode(body),
-            :expects  => 201,
-            :method   => 'POST',
-            :path     => "/domains/#{domain}/records"
+            body:     Fog::JSON.encode(body),
+            expects:  201,
+            method:   "POST",
+            path:     "/#{account_id}/zones/#{zone_name}/records"
           )
         end
       end
 
       class Mock
-        def create_record(domain, name, type, content, options = {})
+        def create_record(account_id, zone_name, name, type, content, options = {})
           body = {
-            "record" => {
+            "data" => {
               "id" => Fog::Mock.random_numbers(1).to_i,
-              "domain_id" => domain,
+              "domain_id" => 1,
               "name" => name,
               "content" => content,
               "ttl" => 3600,
-              "prio" => nil,
-              "record_type" => type,
-              "system_record" => nil,
+              "priority" => 0,
+              "type" => type,
+              "system_record" => false,
               "created_at" => Time.now.iso8601,
               "updated_at" => Time.now.iso8601,
             }.merge(options)
           }
-          self.data[:records][domain] ||= []
-          self.data[:records][domain] << body
+          self.data[:records][zone_name] ||= []
+          self.data[:records][zone_name] << body
 
           response = Excon::Response.new
           response.status = 201

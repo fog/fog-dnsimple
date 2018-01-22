@@ -6,15 +6,15 @@ module Fog
         #
         # ==== Parameters
         # * account_id<~String> - the account the domain belong to
-        # * domain_name<~String> - domain name to host (ie example.com)
+        # * zone_name<~String> - zone name to host (ie example.com)
         #
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~Hash>:
         #     * "data"<~Hash> The representation of the domain.
-        def create_domain(account_id, domain_name)
+        def create_domain(account_id, zone_name)
           body = {
-            "name" => domain_name
+            "name" => zone_name
           }
 
           request(
@@ -27,14 +27,14 @@ module Fog
       end
 
       class Mock
-        def create_domain(account_id, domain_name)
+        def create_domain(account_id, zone_name)
           body = {
             "data" =>  {
               "id"                 => Fog::Mock.random_numbers(1).to_i,
               "account_id"         => account_id,
               "registrant_id"      => nil,
-              "name"               => domain_name,
-              "unicode_name"       => domain_name,
+              "name"               => zone_name,
+              "unicode_name"       => zone_name,
               "token"              => "4fIFYWYiJayvL2tkf_mkBkqC4L+4RtYqDA",
               "state"              => "registered",
               "auto_renew"         => nil,

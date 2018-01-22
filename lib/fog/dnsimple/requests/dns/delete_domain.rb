@@ -10,21 +10,21 @@ module Fog
         #
         # ==== Parameters
         # * account_id<~String> - the account the domain belong to
-        # * domain_id<~String> - domain name or numeric ID
+        # * zone_name<~String> - zone name
         #
-        def delete_domain(account_id, domain_id)
+        def delete_domain(account_id, zone_name)
           request(
             expects:  204,
             method:   "DELETE",
-            path:     "/#{account_id}/domains/#{domain_id}"
+            path:     "/#{account_id}/domains/#{zone_name}"
           )
         end
       end
 
       class Mock
-        def delete_domain(_account_id, domain_id)
-          self.data[:records].delete(domain_id)
-          self.data[:domains].reject! { |domain| domain["data"]["name"] == domain_id }
+        def delete_domain(_account_id, zone_name)
+          self.data[:records].delete(zone_name)
+          self.data[:domains].reject! { |domain| domain["data"]["name"] == zone_name }
 
           response = Excon::Response.new
           response.status = 204
