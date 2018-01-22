@@ -18,10 +18,10 @@ module Fog
 
       class Mock
         def delete_record(zone_name, record_id)
-          self.data[:records][zone_name].reject! { |record| record["data"]["id"] == record_id }
+          self.data[:records][zone_name].reject! { |record| record["id"] == record_id }
 
           response = Excon::Response.new
-          response.status = 200
+          response.status = 204
           response
         end
       end

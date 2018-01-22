@@ -9,8 +9,8 @@ module Fog
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~Hash>:
-        #     * <~Array>:
-        #       * "data"<~Hash> The representation of the domain.
+        #     * "data"<~Array>:
+        #       * <~Hash> The representation of the domain.
         def list_domains
           request(
             expects:  200,
@@ -24,7 +24,7 @@ module Fog
         def list_domains
           response = Excon::Response.new
           response.status = 200
-          response.body = self.data[:domains]
+          response.body = { "data" => self.data[:domains] }
           response
         end
       end

@@ -23,7 +23,7 @@ module Fog
           request(
             body:     Fog::JSON.encode(body),
             expects:  200,
-            method:   "PUT",
+            method:   "PATCH",
             path:     "/#{@dnsimple_account}/zones/#{zone_name}/records/#{record_id}"
           )
         end
@@ -31,16 +31,16 @@ module Fog
 
       class Mock
         def update_record(zone_name, record_id, options)
-          record = self.data[:records][zone_name].find { |record| record["data"]["id"] == record_id }
+          record = self.data[:records][zone_name].find { |record| record["id"] == record_id }
           response = Excon::Response.new
 
           if record.nil?
             response.status = 400
           else
             response.status = 200
-            record["data"].merge!(options)
-            record["data"]["updated_at"] = Time.now.iso8601
-            response.body = record
+            record.merge!(options)
+            record["updated_at"] = Time.now.iso8601
+            response.body = { "data" => record }
           end
 
           response

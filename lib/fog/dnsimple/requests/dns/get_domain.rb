@@ -25,12 +25,12 @@ module Fog
       class Mock
         def get_domain(zone_name)
           domain = self.data[:domains].find do |domain|
-            domain["data"]["id"] == zone_name || domain["data"]["name"] == zone_name
+            domain["id"] == zone_name || domain["name"] == zone_name
           end
 
           response = Excon::Response.new
           response.status = 200
-          response.body = domain
+          response.body = { "data" => domain }
           response
         end
       end

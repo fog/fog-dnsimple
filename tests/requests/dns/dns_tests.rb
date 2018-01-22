@@ -8,7 +8,7 @@ Shindo.tests('Fog::DNS[:dnsimple] | DNS requests', ['dnsimple', 'dns']) do
     test("get current domain count") do
       response = Fog::DNS[:dnsimple].list_domains
       if response.status == 200
-        @domain_count = response.body.size
+        @domain_count = response.body["data"].size
       end
 
       response.status == 200
@@ -86,11 +86,11 @@ Shindo.tests('Fog::DNS[:dnsimple] | DNS requests', ['dnsimple', 'dns']) do
       response = Fog::DNS[:dnsimple].list_records(@domain["name"])
 
       if response.status == 200
-        @records = response.body
+        @records = response.body["data"]
       end
 
       test "list records returns all records for domain" do
-        @records.reject { |record| record["data"]["system_record"] }.size == 2
+        @records.reject { |record| record["system_record"] }.size == 2
       end
 
       response.status == 200
@@ -101,9 +101,9 @@ Shindo.tests('Fog::DNS[:dnsimple] | DNS requests', ['dnsimple', 'dns']) do
 
       result = true
       @records.each do |record|
-        next if record["data"]["system_record"]
-        response = Fog::DNS[:dnsimple].delete_record(domain, record["data"]["id"])
-        if response.status != 200
+        next if record["system_record"]
+        response = Fog::DNS[:dnsimple].delete_record(domain, record["id"])
+        if response.status != 204
           result = false
           break
         end

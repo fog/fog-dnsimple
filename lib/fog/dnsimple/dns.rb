@@ -51,7 +51,7 @@ module Fog
       end
 
       class Real
-        def initialize(options={})
+        def initialize(options = {})
           @dnsimple_token = options[:dnsimple_token]
           @dnsimple_account = options[:dnsimple_account]
 

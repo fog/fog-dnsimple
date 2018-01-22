@@ -27,7 +27,7 @@ module Fog
 
           if self.data[:records].key?(zone_name)
             response.status = 200
-            response.body = self.data[:records][zone_name].find { |record| record["data"]["id"] == record_id }
+            response.body = { "data" => self.data[:records][zone_name].find { |record| record["id"] == record_id }}
 
             if response.body.nil?
               response.status = 404

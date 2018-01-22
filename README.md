@@ -35,9 +35,9 @@ Initialize a `Fog::DNS` object using the DNSimple provider.
 
 ```ruby
 dns = Fog::DNS.new({
-  provider:       "DNSimple",
-  dnsimple_email: "YOUR_EMAIL",
-  dnsimple_token: "YOUR_API_V1_TOKEN",
+  provider:         "DNSimple",
+  dnsimple_token:   "YOUR_API_TOKEN",
+  dnsimple_account: "YOUR_ACCOUNT_ID",
 })
 ```
 
@@ -60,18 +60,6 @@ The following configurations are supported:
 dns = Fog::DNS.new({
   # Use dnsimple_url to provide a different base URL, e.g. the Sandbox URL
   dnsimple_url:   "https://api.sandbox.dnsimple.com/",
-
-  # API v1 token-based authentication
-  dnsimple_email: "...",
-  dnsimple_token: "...",
-
-  # API v1 basic-auth
-  dnsimple_email: "...",
-  dnsimple_password: "...",
-
-  # API v1 domain-token authentication
-  dnsimple_domain: "example.com",
-  dnsimple_token: "...",
 })
 ```
 

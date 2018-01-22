@@ -10,8 +10,8 @@ module Fog
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~Hash>:
-        #     * <~Array>:
-        #       * "data"<~Hash> The representation of the record.
+        #     * "data"<~Array>:
+        #       * <~Hash> The representation of the record.
         def list_records(zone_name)
           request(
             expects:  200,
@@ -25,7 +25,7 @@ module Fog
         def list_records(zone_name)
           response = Excon::Response.new
           response.status = 200
-          response.body = self.data[:records][zone_name] || []
+          response.body = { "data" => self.data[:records][zone_name] || [] }
           response
         end
       end

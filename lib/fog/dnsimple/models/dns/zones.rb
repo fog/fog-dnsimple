@@ -9,7 +9,7 @@ module Fog
 
         def all
           clear
-          data = service.list_domains.body.map { |zone| zone["data"] }
+          data = service.list_domains.body["data"]
           load(data)
         end
 
