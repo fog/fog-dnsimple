@@ -17,7 +17,7 @@ module Fog
         # * response<~Excon::Response>:
         #   * body<~Hash>:
         #     * 'record'<~Hash> The representation of the record.
-        def create_record(account_id, zone_name, name, type, content, options = {})
+        def create_record(zone_name, name, type, content, options = {})
           body = {
             "name" => name,
             "type" => type,
@@ -29,13 +29,13 @@ module Fog
             body:     Fog::JSON.encode(body),
             expects:  201,
             method:   "POST",
-            path:     "/#{account_id}/zones/#{zone_name}/records"
+            path:     "/#{@dnsimple_account}/zones/#{zone_name}/records"
           )
         end
       end
 
       class Mock
-        def create_record(account_id, zone_name, name, type, content, options = {})
+        def create_record(zone_name, name, type, content, options = {})
           body = {
             "data" => {
               "id" => Fog::Mock.random_numbers(1).to_i,

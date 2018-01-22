@@ -5,14 +5,13 @@ module Fog
         # Create a single domain in DNSimple in your account.
         #
         # ==== Parameters
-        # * account_id<~String> - the account the domain belong to
         # * zone_name<~String> - zone name to host (ie example.com)
         #
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~Hash>:
         #     * "data"<~Hash> The representation of the domain.
-        def create_domain(account_id, zone_name)
+        def create_domain(zone_name)
           body = {
             "name" => zone_name
           }
@@ -21,17 +20,17 @@ module Fog
             body:     Fog::JSON.encode(body),
             expects:  201,
             method:   "POST",
-            path:     "/#{account_id}/domains"
+            path:     "/#{@dnsimple_account}/domains"
           )
         end
       end
 
       class Mock
-        def create_domain(account_id, zone_name)
+        def create_domain(zone_name)
           body = {
             "data" =>  {
               "id"                 => Fog::Mock.random_numbers(1).to_i,
-              "account_id"         => account_id,
+              "account_id"         => @dnsimple_account,
               "registrant_id"      => nil,
               "name"               => zone_name,
               "unicode_name"       => zone_name,

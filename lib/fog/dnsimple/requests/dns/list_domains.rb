@@ -5,24 +5,23 @@ module Fog
         # Get the list of domains in the account.
         #
         # ==== Parameters
-        # * account_id<~String> - the account the domains belong to
         #
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~Hash>:
         #     * <~Array>:
         #       * "data"<~Hash> The representation of the domain.
-        def list_domains(account_id)
+        def list_domains
           request(
             expects:  200,
             method:   "GET",
-            path:     "/#{account_id}/domains"
+            path:     "/#{@dnsimple_account}/domains"
           )
         end
       end
 
       class Mock
-        def list_domains(_account_id)
+        def list_domains
           response = Excon::Response.new
           response.status = 200
           response.body = self.data[:domains]

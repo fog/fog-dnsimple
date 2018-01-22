@@ -5,7 +5,6 @@ module Fog
         # Gets record from given domain.
         #
         # ==== Parameters
-        # * account_id<~String> - the account the domain belongs to
         # * zone_name<~String> - zone name
         # * record_id<~String>
         #
@@ -13,17 +12,17 @@ module Fog
         # * response<~Excon::Response>:
         #   * body<~Hash>:
         #     * "data"<~Hash> The representation of the record.
-        def get_record(account_id, zone_name, record_id)
+        def get_record(zone_name, record_id)
           request(
             expects:  200,
             method:   "GET",
-            path:     "/#{account_id}/zones/#{zone_name}/records/#{record_id}"
+            path:     "/#{@dnsimple_account}/zones/#{zone_name}/records/#{record_id}"
           )
         end
       end
 
       class Mock
-        def get_record(_account_id, zone_name, record_id)
+        def get_record(zone_name, record_id)
           response = Excon::Response.new
 
           if self.data[:records].key?(zone_name)

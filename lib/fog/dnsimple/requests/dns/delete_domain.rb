@@ -12,17 +12,17 @@ module Fog
         # * account_id<~String> - the account the domain belong to
         # * zone_name<~String> - zone name
         #
-        def delete_domain(account_id, zone_name)
+        def delete_domain(zone_name)
           request(
             expects:  204,
             method:   "DELETE",
-            path:     "/#{account_id}/domains/#{zone_name}"
+            path:     "/#{@dnsimple_account}/domains/#{zone_name}"
           )
         end
       end
 
       class Mock
-        def delete_domain(_account_id, zone_name)
+        def delete_domain(zone_name)
           self.data[:records].delete(zone_name)
           self.data[:domains].reject! { |domain| domain["data"]["name"] == zone_name }
 

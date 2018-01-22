@@ -5,7 +5,6 @@ module Fog
         # Update the given record for the given domain.
         #
         # ==== Parameters
-        # * account_id<~String> - the account the domain belongs to
         # * zone_name<~String> - zone name
         # * record_id<~String>
         # * options<~Hash> - optional
@@ -18,20 +17,20 @@ module Fog
         # * response<~Excon::Response>:
         #   * body<~Hash>:
         #     * "data"<~Hash> The representation of the record.
-        def update_record(account_id, zone_name, record_id, options)
+        def update_record(zone_name, record_id, options)
           body = options
 
           request(
             body:     Fog::JSON.encode(body),
             expects:  200,
             method:   "PUT",
-            path:     "/#{account_id}/zones/#{zone_name}/records/#{record_id}"
+            path:     "/#{@dnsimple_account}/zones/#{zone_name}/records/#{record_id}"
           )
         end
       end
 
       class Mock
-        def update_record(_account_id, zone_name, record_id, options)
+        def update_record(zone_name, record_id, options)
           record = self.data[:records][zone_name].find { |record| record["data"]["id"] == record_id }
           response = Excon::Response.new
 
