@@ -7,7 +7,7 @@ module Fog
       class Zone < Fog::Model
         identity :id
 
-        attribute :domain,     :aliases => 'name'
+        attribute :domain,     aliases: "name"
         attribute :created_at
         attribute :updated_at
 
@@ -36,7 +36,7 @@ module Fog
 
         def save
           requires :domain
-          data = service.create_domain(domain).body["domain"]
+          data = service.create_domain(domain).body["data"]
           merge_attributes(data)
           true
         end
