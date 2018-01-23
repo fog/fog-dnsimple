@@ -12,13 +12,13 @@ module Fog
         def all
           requires :zone
           clear
-          data = service.list_records(zone.id).body.map {|record| record['record']}
+          data = service.list_records(zone.id).body["data"]
           load(data)
         end
 
         def get(record_id)
           requires :zone
-          data = service.get_record(zone.id, record_id).body["record"]
+          data = service.get_record(zone.id, record_id).body["data"]
           new(data)
         rescue Excon::Errors::NotFound
           nil
@@ -26,7 +26,7 @@ module Fog
 
         def new(attributes = {})
           requires :zone
-          super({ :zone => zone }.merge!(attributes))
+          super({ zone: zone }.merge!(attributes))
         end
       end
     end

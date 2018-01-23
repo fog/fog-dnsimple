@@ -6,16 +6,16 @@ module Fog
       class Record < Fog::Model
         identity :id
 
-        attribute :zone_id,     :aliases => "domain_id"
+        attribute :zone_id,     aliases: "domain_id"
         attribute :name
-        attribute :value,       :aliases => "content"
+        attribute :value,       aliases: "content"
         attribute :ttl
-        attribute :priority,    :aliases => "prio"
-        attribute :type,        :aliases => "record_type"
+        attribute :priority
+        attribute :type
         attribute :created_at
         attribute :updated_at
 
-        def initialize(attributes={})
+        def initialize(attributes = {})
           super
         end
 
@@ -31,8 +31,7 @@ module Fog
         def save
           requires :name, :type, :value
           options = {}
-          options[:prio] = priority if priority
-          options[:ttl]  = ttl if ttl
+          options[:ttl] = ttl if ttl
 
           # decide whether its a new record or update of an existing
           if id.nil?
@@ -44,7 +43,7 @@ module Fog
             data = service.update_record(zone.id, id, options)
           end
 
-          merge_attributes(data.body["record"])
+          merge_attributes(data.body["data"])
           true
         end
 

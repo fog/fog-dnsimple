@@ -7,30 +7,30 @@ module Fog
         # itself.
         #
         # ==== Parameters
-        # * domain<~String> - domain name or numeric ID
+        # * zone_name<~String> - zone name
         #
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~Hash>:
-        #     * 'domain'<~Hash> The representation of the domain.
-        def get_domain(domain)
+        #     * "data"<~Hash> The representation of the domain.
+        def get_domain(zone_name)
           request(
-            :expects  => 200,
-            :method   => "GET",
-            :path     => "/domains/#{domain}"
+            expects:  200,
+            method:   "GET",
+            path:     "/#{@dnsimple_account}/domains/#{zone_name}"
           )
         end
       end
 
       class Mock
-        def get_domain(id)
+        def get_domain(zone_name)
           domain = self.data[:domains].find do |domain|
-            domain["domain"]["id"] == id || domain["domain"]["name"] == id
+            domain["id"] == zone_name || domain["name"] == zone_name
           end
 
           response = Excon::Response.new
           response.status = 200
-          response.body = domain
+          response.body = { "data" => domain }
           response
         end
       end

@@ -5,27 +5,27 @@ module Fog
         # Get the list of records for the specific domain.
         #
         # ==== Parameters
-        # * domain<~String> - domain name or numeric ID
+        # * zone_name<~String> - zone name
         #
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~Hash>:
-        #     * <~Array>:
-        #       * 'record'<~Hash> The representation of the record.
-        def list_records(domain)
+        #     * "data"<~Array>:
+        #       * <~Hash> The representation of the record.
+        def list_records(zone_name)
           request(
-            :expects  => 200,
-            :method   => "GET",
-            :path     => "/domains/#{domain}/records"
+            expects:  200,
+            method:   "GET",
+            path:     "/#{@dnsimple_account}/zones/#{zone_name}/records"
           )
         end
       end
 
       class Mock
-        def list_records(domain)
+        def list_records(zone_name)
           response = Excon::Response.new
           response.status = 200
-          response.body = self.data[:records][domain] || []
+          response.body = { "data" => self.data[:records][zone_name] || [] }
           response
         end
       end
