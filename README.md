@@ -41,6 +41,9 @@ dns = Fog::DNS.new({
 })
 ```
 
+- `YOUR_API_TOKEN`: This is the API v2 access token. You can create it from your account page: Account > Access Tokens > Account access tokens.
+- `YOUR_ACCOUNT_ID`: This is the account ID. We currently support only the numeric ID (account string identifiers will be supported in the future). The account ID is the numeric ID after the `/a` in the path prefix. For instance, if the account page is `https://dnsimple.com/a/1234/domains`, the account ID is `1234`.
+
 This can then be used like other [Fog DNS](http://fog.io/dns/) providers.
 
 ```ruby
