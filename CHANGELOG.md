@@ -3,6 +3,8 @@
 
 #### master
 
+- FIXED: Added missing "minimum Ruby version" in Gemspec
+
 - CHANGED: Replaced Shindo with Minitest (GH-5)
 
 
