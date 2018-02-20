@@ -17,6 +17,7 @@ module Fog
         end
 
         def get(record_id)
+          requires :zone
           data = service.get_record(zone.id, record_id).body["data"]
           new(data)
         rescue Excon::Errors::NotFound
