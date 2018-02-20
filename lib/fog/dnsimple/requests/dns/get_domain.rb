@@ -24,13 +24,18 @@ module Fog
 
       class Mock
         def get_domain(zone_name)
-          domain = self.data[:domains].find do |domain|
-            domain["id"] == zone_name || domain["name"] == zone_name
+          response = Excon::Response.new
+
+          payload = self.data[:domains].find { |domain| domain["id"] == zone_name || domain["name"] == zone_name }
+          if payload
+            response.status = 200
+            response.body = { "data" => payload }
+          else
+            # response.status = 404
+            # response.body = { "message" => "Domain `#{zone_name}` not found" }
+            raise Excon::Errors::NotFound, "Domain `#{zone_name}` not found"
           end
 
-          response = Excon::Response.new
-          response.status = 200
-          response.body = { "data" => domain }
           response
         end
       end

@@ -24,7 +24,10 @@ module Fog
         def list_domains
           response = Excon::Response.new
           response.status = 200
-          response.body = { "data" => self.data[:domains] }
+          response.body = {
+              "data" => self.data[:domains],
+              "pagination" => { "current_page" => 1, "per_page" => 30, "total_entries" => 60, "total_pages" => 2 }
+          }
           response
         end
       end
