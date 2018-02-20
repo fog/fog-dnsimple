@@ -1,6 +1,11 @@
 # Changelog
 
 
+#### master
+
+- CHANGED: Replaced Shindo with Minitest (GH-5)
+
+
 #### Release 2.0
 
 Upgrade to DNSimple API v2.
