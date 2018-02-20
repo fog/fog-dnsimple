@@ -114,7 +114,7 @@ module Fog
 
           begin
             current_page += 1
-            current_query = query.merge({ page: current_page, per_page: 5 })
+            current_query = query.merge({ page: current_page, per_page: 100 })
 
             response = yield(current_query)
             total_entries ||= response.body.dig("pagination", "total_entries")
