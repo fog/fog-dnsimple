@@ -3,6 +3,8 @@
 
 #### master
 
+- NEW: Added ability to fetch all (non-paginated) domains and records (GH-4, GH-6)
+
 - FIXED: Added missing "minimum Ruby version" in Gemspec
 
 - CHANGED: Replaced Shindo with Minitest (GH-5)
