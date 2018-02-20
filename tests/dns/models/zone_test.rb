@@ -1,4 +1,4 @@
-require 'test_header'
+require 'test_helper'
 
 class Fog::DNS::Dnsimple::ZoneTest < Minitest::Test
   include TestModelHelpers

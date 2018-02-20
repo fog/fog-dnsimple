@@ -11,9 +11,3 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = !ENV["VERBOSE"].nil?
   t.warning = !ENV["WARNING"].nil?
 end
-
-
-task :shindo do
-  mock = ENV['FOG_MOCK'] || 'true'
-  sh("export FOG_MOCK=#{mock} && bundle exec shindont")
-end
