@@ -2,31 +2,33 @@ module Fog
   module DNS
     class Dnsimple
       class Real
-        # Get the list of domains in the account.
+        # Get the paginated list of domains in the account.
         #
-        # ==== Parameters
+        # @see https://developer.dnsimple.com/v2/domains/#list
+        # @see https://github.com/dnsimple/dnsimple-developer/tree/master/fixtures/v2/listDomains
         #
-        # ==== Returns
-        # * response<~Excon::Response>:
-        #   * body<~Hash>:
-        #     * "data"<~Array>:
-        #       * <~Hash> The representation of the domain.
-        def list_domains
+        # @param  query [Hash]
+        # @return [Excon::Response]
+        def list_domains(query: {})
           request(
-            expects:  200,
-            method:   "GET",
-            path:     "/#{@dnsimple_account}/domains"
+            expects: 200,
+            method: "GET",
+            path: "/#{@dnsimple_account}/domains",
+            query: query
           )
         end
       end
 
       class Mock
-        def list_domains
+        def list_domains(query: {})
+          page = query[:page] || 1
+          per_page = query[:per_page] || 30
+
           response = Excon::Response.new
           response.status = 200
           response.body = {
               "data" => self.data[:domains],
-              "pagination" => { "current_page" => 1, "per_page" => 30, "total_entries" => 60, "total_pages" => 2 }
+              "pagination" => { "current_page" => page, "per_page" => per_page, "total_entries" => 60, "total_pages" => 2 }
           }
           response
         end
