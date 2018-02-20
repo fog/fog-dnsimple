@@ -13,14 +13,13 @@ class Fog::DNS::Dnsimple::DnsTest < Minitest::Test
     @domain = nil
     @domain_count = 0
 
+
     ## Get current domain count
 
     response = Fog::DNS[:dnsimple].list_domains
-    if response.status == 200
-      @domain_count = response.body["data"].size
-    end
-
     assert_equal 200, response.status
+
+    @domain_count = response.body["data"].size
 
 
     ## Create domain
@@ -95,12 +94,20 @@ class Fog::DNS::Dnsimple::DnsTest < Minitest::Test
     ## List records
 
     response = Fog::DNS[:dnsimple].list_records(@domain["name"])
-
     assert_equal 200, response.status
 
     # list records returns all records for domain
     @records = response.body["data"]
     assert_equal 2, @records.reject { |record| record["system_record"] }.size
+
+
+    ## Pagination
+
+    response = Fog::DNS[:dnsimple].list_all_domains
+    assert_equal 200, response.status
+
+    response = Fog::DNS[:dnsimple].list_all_records(@domain["name"])
+    assert_equal 200, response.status
 
 
     # Delete records

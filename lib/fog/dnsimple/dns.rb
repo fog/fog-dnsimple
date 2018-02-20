@@ -14,11 +14,13 @@ module Fog
 
       request_path 'fog/dnsimple/requests/dns'
       request :list_domains
+      request :list_all_domains
       request :create_domain
       request :get_domain
       request :delete_domain
       request :create_record
       request :list_records
+      request :list_all_records
       request :update_record
       request :delete_record
       request :get_record
@@ -98,6 +100,32 @@ module Fog
           unless response.body.empty?
             response.body = Fog::JSON.decode(response.body)
           end
+          response
+        end
+
+        private
+
+        def paginate(query: {})
+          current_page = 0
+          total_pages = nil
+          total_entries = nil
+          collection = []
+          response = nil
+
+          begin
+            current_page += 1
+            current_query = query.merge({ page: current_page, per_page: 100 })
+
+            response = yield(current_query)
+            total_entries ||= response.body.dig("pagination", "total_entries")
+            total_pages ||= response.body.dig("pagination", "total_pages")
+            collection.concat(response.body["data"])
+          end while current_page < total_pages
+
+          total_entries == collection.size or
+            raise(Fog::Errors::Error, "Expected `#{total_entries}`, fetched only `#{collection.size}`")
+
+          response.body["data"] = collection
           response
         end
       end
