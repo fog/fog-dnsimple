@@ -8,7 +8,6 @@ rvm:
   - 2.4
   - 2.5
   - ruby-head
-  - jruby9k
   - jruby-head
 
 before_install:
@@ -18,7 +17,6 @@ before_install:
 matrix:
   allow_failures:
     - rvm: jruby-head
-    - rvm: jruby9k
 
 notifications:
   slack:
