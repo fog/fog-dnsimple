@@ -1,4 +1,11 @@
-Shindo.tests('Fog::DNS[:dnsimple] | DNS requests', ['dnsimple', 'dns']) do
+Shindo.tests('Fog::DNS[:dnsimple] | DNS requests', ["dnsimple", "dns"]) do
+
+  def generate_unique_domain
+    # get time (with 1/100th of sec accuracy)
+    # want unique domain name and if provider is fast, this can be called more than once per second
+    time = (Time.now.to_f * 100).to_i
+    "test-#{time}.com"
+  end
 
   @domain = nil
   @domain_count = 0
@@ -116,7 +123,6 @@ Shindo.tests('Fog::DNS[:dnsimple] | DNS requests', ['dnsimple', 'dns']) do
       response = Fog::DNS[:dnsimple].delete_domain(@domain["name"])
       response.status == 204
     end
-
   end
 
 end
