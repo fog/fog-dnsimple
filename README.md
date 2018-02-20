@@ -5,11 +5,8 @@
 
 ## API Version
 
-This library currently uses the [DNSimple API v1](https://developer.dnsimple.com/v1/) 
-and it is fully compatible with the legacy implementation bundled with the `fog` gem.
-
-In other words, this is a drop-in replacement. Please note that the `dnsimple` provider
-will eventually be removed from the `fog` gem in favor of this fog-specific module.
+This library currently uses the [DNSimple API v2](https://developer.dnsimple.com/v2/) 
+and it is compatible with the legacy implementation bundled with the `fog` gem.
 
 
 ## Installation
@@ -22,11 +19,15 @@ gem 'fog-dnsimple'
 
 And then execute:
 
-    $ bundle
+```
+bundle
+```
 
 Or install it yourself as:
 
-    $ gem install fog-dnsimple
+```
+gem install fog-dnsimple
+```
 
 
 ## Usage
