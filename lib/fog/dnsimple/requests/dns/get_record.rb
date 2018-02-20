@@ -26,21 +26,22 @@ module Fog
           response = Excon::Response.new
 
           if self.data[:records].key?(zone_name)
-            response.status = 200
-            response.body = { "data" => self.data[:records][zone_name].find { |record| record["id"] == record_id }}
+            payload = self.data[:records][zone_name].find { |record| record["id"] == record_id }
 
-            if response.body.nil?
-              response.status = 404
-              response.body = {
-                "error" => "Couldn't find Record with id = #{record_id}"
-              }
+            if payload
+              response.status = 200
+              response.body = { "data" => payload }
+            else
+              # response.status = 404
+              # response.body = { "message" => "Record `#{record_id}` not found" }
+              raise Excon::Errors::NotFound, "Record `#{record_id}` not found"
             end
           else
-            response.status = 404
-            response.body = {
-              "error" => "Couldn't find Domain with name = #{zone_name}"
-            }
+            # response.status = 404
+            # response.body = { "message" => "Domain `#{zone_name}` not found" }
+            raise Excon::Errors::NotFound, "Domain `#{zone_name}` not found"
           end
+
           response
         end
       end

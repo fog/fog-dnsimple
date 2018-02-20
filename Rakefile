@@ -1,9 +1,13 @@
 require "bundler/gem_tasks"
-require "rake/testtask"
 
 task :default => :test
 
-mock = ENV['FOG_MOCK'] || 'true'
-task :test do
-  sh("export FOG_MOCK=#{mock} && bundle exec shindont")
+
+require "rake/testtask"
+
+Rake::TestTask.new(:test) do |t|
+  t.libs = %w( lib test )
+  t.pattern = "test/**/*_test.rb"
+  t.verbose = !ENV["VERBOSE"].nil?
+  t.warning = !ENV["WARNING"].nil?
 end
