@@ -67,7 +67,6 @@ module Fog
         private
 
         # Converts the dnsimple-ruby result and errors to Excon types.
-        # Thus the requests keep the same responses and exceptions.
         def request
           unless @dnsimple_token && @dnsimple_account
             raise ArgumentError.new("Insufficient credentials to properly authenticate!")

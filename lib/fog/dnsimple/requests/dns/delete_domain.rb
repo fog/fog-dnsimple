@@ -9,7 +9,6 @@ module Fog
         # DNSimple this will not delete the domain from the registry.
         #
         # ==== Parameters
-        # * account_id<~String> - the account the domain belong to
         # * zone_name<~String> - zone name
         #
         def delete_domain(zone_name)

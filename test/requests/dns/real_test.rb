@@ -3,12 +3,18 @@ require 'webmock/minitest'
 
 class Fog::Dnsimple::DNS::RealTest < Minitest::Test
 
+  API_URL = "https://api.dnsimple.com"
+
   def setup
     @service = Fog::Dnsimple::DNS::Real.new(dnsimple_token: "token", dnsimple_account: "1010")
   end
 
-  def stub_api(method, path, status: 200, body: nil, query: nil)
-    stub = stub_request(method, "https://api.dnsimple.com/v2/1010#{path}")
+  def account_url(path, base_url: API_URL)
+    "#{base_url}/v2/1010#{path}"
+  end
+
+  def stub_api(method, path, status: 200, body: nil, query: nil, base_url: API_URL)
+    stub = stub_request(method, account_url(path, base_url: base_url))
     stub = stub.with(query: query) if query
     stub.to_return(
       status: status,
@@ -25,7 +31,7 @@ class Fog::Dnsimple::DNS::RealTest < Minitest::Test
     assert_kind_of Excon::Response, response
     assert_equal 200, response.status
     assert_equal({ "id" => 1, "name" => "example.com" }, response.body["data"])
-    assert_requested :get, "https://api.dnsimple.com/v2/1010/domains/example.com",
+    assert_requested :get, account_url("/domains/example.com"),
                      headers: { "Authorization" => "Bearer token", "User-Agent" => /fog-dnsimple\/#{Fog::Dnsimple::VERSION}/ }
   end
 
@@ -63,7 +69,7 @@ class Fog::Dnsimple::DNS::RealTest < Minitest::Test
 
     assert_equal 201, response.status
     assert_equal 5, response.body["data"]["id"]
-    assert_requested :post, "https://api.dnsimple.com/v2/1010/zones/example.com/records",
+    assert_requested :post, account_url("/zones/example.com/records"),
                      body: { "name" => "www", "type" => "A", "content" => "1.2.3.4", "ttl" => 60 }
   end
 
@@ -84,9 +90,9 @@ class Fog::Dnsimple::DNS::RealTest < Minitest::Test
   end
 
   def test_dnsimple_url
-    service = Fog::Dnsimple::DNS::Real.new(dnsimple_token: "token", dnsimple_account: "1010", dnsimple_url: "https://api.sandbox.dnsimple.com")
-    stub_request(:get, "https://api.sandbox.dnsimple.com/v2/1010/domains/example.com")
-      .to_return(status: 200, headers: { "Content-Type" => "application/json" }, body: JSON.dump("data" => {}))
+    sandbox_url = "https://api.sandbox.dnsimple.com"
+    service = Fog::Dnsimple::DNS::Real.new(dnsimple_token: "token", dnsimple_account: "1010", dnsimple_url: sandbox_url)
+    stub_api(:get, "/domains/example.com", body: { "data" => {} }, base_url: sandbox_url)
 
     assert_equal 200, service.get_domain("example.com").status
   end
