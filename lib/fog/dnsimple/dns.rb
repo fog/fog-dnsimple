@@ -131,11 +131,7 @@ module Fog
       end
     end
   end
-end
 
-module Fog
-  module DNS
-    # Keeps the constant from the service::provider format for compatibility.
-    Dnsimple = Fog::Dnsimple::DNS
-  end
+  # Keeps the constant from the service::provider format for compatibility.
+  DNS::Dnsimple = Dnsimple::DNS
 end
