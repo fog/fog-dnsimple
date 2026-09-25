@@ -39,7 +39,8 @@ class Fog::Dnsimple::DNS::RealTest < Minitest::Test
   def test_get_domain_not_found
     stub_api(:get, "/domains/example.com", status: 404, body: { "message" => "Domain `example.com` not found" })
 
-    assert_raises(Excon::Error::NotFound) { @service.get_domain("example.com") }
+    error = assert_raises(Excon::Error::NotFound) { @service.get_domain("example.com") }
+    assert_equal({ "message" => "Domain `example.com` not found" }, JSON.parse(error.response.body))
   end
 
   def test_request_error_page
@@ -53,7 +54,8 @@ class Fog::Dnsimple::DNS::RealTest < Minitest::Test
   def test_request_unauthorized
     stub_api(:get, "/domains/example.com", status: 401, body: { "message" => "Authentication failed" })
 
-    assert_raises(Excon::Error::Unauthorized) { @service.get_domain("example.com") }
+    error = assert_raises(Excon::Error::Unauthorized) { @service.get_domain("example.com") }
+    assert_equal({ "message" => "Authentication failed" }, JSON.parse(error.response.body))
   end
 
   def test_request_timeout

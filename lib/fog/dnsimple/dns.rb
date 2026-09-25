@@ -73,11 +73,12 @@ module Fog
             raise ArgumentError.new("Insufficient credentials to properly authenticate!")
           end
 
-          excon_response(yield(@client).http_response)
+          http_response = yield(@client).http_response
+          excon_response(http_response, http_response.parsed_response || "")
         rescue ::Dnsimple::RequestError => e
-          raise Excon::Error.status_error({}, excon_response(e.http_response))
+          raise Excon::Error.status_error({}, excon_response(e.http_response, e.http_response.body.to_s))
         rescue ::Dnsimple::AuthenticationFailed => e
-          raise Excon::Error.status_error({}, Excon::Response.new(status: 401, body: { "message" => e.message }))
+          raise Excon::Error.status_error({}, Excon::Response.new(status: 401, body: JSON.dump("message" => e.message)))
         rescue Timeout::Error => e
           raise Excon::Error::Timeout, e.message
         rescue SocketError, SystemCallError, IOError, OpenSSL::SSL::SSLError => e
@@ -97,19 +98,13 @@ module Fog
           end
         end
 
-        def excon_response(http_response)
+        # Excon errors carry the raw body, and successful responses carry the parsed JSON.
+        def excon_response(http_response, body)
           Excon::Response.new(
             status: http_response.code,
             headers: http_response.response.each_header.to_h,
-            body: response_body(http_response)
+            body: body
           )
-        end
-
-        # An error page from a proxy or a load balancer is not JSON.
-        def response_body(http_response)
-          http_response.parsed_response || ""
-        rescue JSON::ParserError
-          http_response.body
         end
 
         def paginate(query: {})
