@@ -5,6 +5,8 @@ module Fog
   module Dnsimple
     extend Fog::Provider
 
+    autoload :DNS, File.expand_path('../dnsimple/dns', __FILE__)
+
     service(:dns, 'DNS')
   end
 

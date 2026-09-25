@@ -2,12 +2,12 @@ require 'fog/core/collection'
 require 'fog/dnsimple/models/dns/record'
 
 module Fog
-  module DNS
-    class Dnsimple
+  module Dnsimple
+    class DNS
       class Records < Fog::Collection
         attribute :zone
 
-        model Fog::DNS::Dnsimple::Record
+        model Fog::Dnsimple::DNS::Record
 
         def all
           requires :zone

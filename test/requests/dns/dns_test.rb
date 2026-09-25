@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Fog::DNS::Dnsimple::DnsTest < Minitest::Test
+class Fog::Dnsimple::DNS::DnsTest < Minitest::Test
 
   def generate_unique_domain
     # get time (with 1/100th of sec accuracy)

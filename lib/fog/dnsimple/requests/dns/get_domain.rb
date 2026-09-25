@@ -1,6 +1,6 @@
 module Fog
-  module DNS
-    class Dnsimple
+  module Dnsimple
+    class DNS
       class Real
         # Get the details for a specific domain in your account. You
         # may pass either the domain numeric ID or the domain name

@@ -3,7 +3,7 @@ class Dnsimple < Fog::Bin
     def class_for(key)
       case key
       when :dns
-        Fog::DNS::Dnsimple
+        Fog::Dnsimple::DNS
       else
         raise ArgumentError, "Unrecognized service: #{key}"
       end

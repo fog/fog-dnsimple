@@ -1,6 +1,6 @@
 module Fog
-  module DNS
-    class Dnsimple
+  module Dnsimple
+    class DNS
       class Real
         # Create a new host in the specified zone
         #

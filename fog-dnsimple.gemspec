@@ -26,6 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest"
   spec.add_development_dependency "minitest-reporters"
 
-  spec.add_dependency "fog-core", ">= 1.38", "< 3"
+  spec.add_dependency "fog-core", "~> 2.5"
   spec.add_dependency "fog-json"
 end
