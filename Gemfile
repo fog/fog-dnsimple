@@ -1,4 +1,11 @@
-source 'https://rubygems.org'
+# frozen_string_literal: true
 
-# Specify your gem's dependencies in fog-dnsimple.gemspec
+source "https://rubygems.org"
+
 gemspec
+
+gem "rake"
+
+gem "minitest"
+gem "minitest-reporters"
+gem "webmock"
