@@ -14,11 +14,7 @@ module Fog
         #   * body<~Hash>:
         #     * "data"<~Hash> The representation of the domain.
         def get_domain(zone_name)
-          request(
-            expects:  200,
-            method:   "GET",
-            path:     "/#{@dnsimple_account}/domains/#{zone_name}"
-          )
+          request { |client| client.domains.domain(@dnsimple_account, zone_name) }
         end
       end
 

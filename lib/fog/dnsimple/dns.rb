@@ -1,5 +1,5 @@
 require "fog/core"
-require "fog/json"
+require "dnsimple"
 
 module Fog
   module Dnsimple
@@ -57,53 +57,36 @@ module Fog
           @dnsimple_token = options[:dnsimple_token]
           @dnsimple_account = options[:dnsimple_account]
 
-          if options[:dnsimple_url]
-            uri = URI.parse(options[:dnsimple_url])
-            options[:host]    = uri.host
-            options[:port]    = uri.port
-            options[:scheme]  = uri.scheme
-          end
-
-          connection_options = options[:connection_options] || {}
-          connection_options[:headers] ||= {}
-          connection_options[:headers]["User-Agent"] = "#{Fog::Core::Connection.user_agents} fog-dnsimple/#{Fog::Dnsimple::VERSION}"
-
-          host       = options[:host]        || "api.dnsimple.com"
-          persistent = options[:persistent]  || false
-          port       = options[:port]        || 443
-          scheme     = options[:scheme]      || "https"
-          @connection = Fog::Core::Connection.new("#{scheme}://#{host}:#{port}", persistent, connection_options)
-        end
-
-        def reload
-          @connection.reset
-        end
-
-        def request(params)
-          params[:headers] ||= {}
-
-          if @dnsimple_token && @dnsimple_account
-            params[:headers].merge!("Authorization" => "Bearer #{@dnsimple_token}")
-          else
-            raise ArgumentError.new("Insufficient credentials to properly authenticate!")
-          end
-          params[:headers].merge!(
-              "Accept" => "application/json",
-              "Content-Type" => "application/json"
+          @client = ::Dnsimple::Client.new(
+            access_token: @dnsimple_token,
+            base_url: options[:dnsimple_url],
+            user_agent: "#{Fog::Core::Connection.user_agents} fog-dnsimple/#{Fog::Dnsimple::VERSION}"
           )
-
-          version = params.delete(:version) || "v2"
-          params[:path] = File.join("/", version, params[:path])
-
-          response = @connection.request(params)
-
-          unless response.body.empty?
-            response.body = Fog::JSON.decode(response.body)
-          end
-          response
         end
 
         private
+
+        # Converts the dnsimple-ruby result and errors to Excon types.
+        # Thus the requests keep the same responses and exceptions.
+        def request
+          unless @dnsimple_token && @dnsimple_account
+            raise ArgumentError.new("Insufficient credentials to properly authenticate!")
+          end
+
+          excon_response(yield(@client).http_response)
+        rescue ::Dnsimple::RequestError => e
+          raise Excon::Error.status_error({}, excon_response(e.http_response))
+        rescue ::Dnsimple::AuthenticationFailed => e
+          raise Excon::Error.status_error({}, Excon::Response.new(status: 401, body: { "message" => e.message }))
+        end
+
+        def excon_response(http_response)
+          Excon::Response.new(
+            status: http_response.code,
+            headers: http_response.response.each_header.to_h,
+            body: http_response.parsed_response || ""
+          )
+        end
 
         def paginate(query: {})
           current_page = 0

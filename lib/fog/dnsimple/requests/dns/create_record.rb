@@ -18,19 +18,9 @@ module Fog
         #   * body<~Hash>:
         #     * 'record'<~Hash> The representation of the record.
         def create_record(zone_name, name, type, content, options = {})
-          body = {
-            "name" => name,
-            "type" => type,
-            "content" => content
-          }
-          body.merge!(options)
+          attributes = { name: name, type: type, content: content }.merge(options)
 
-          request(
-            body:     Fog::JSON.encode(body),
-            expects:  201,
-            method:   "POST",
-            path:     "/#{@dnsimple_account}/zones/#{zone_name}/records"
-          )
+          request { |client| client.zones.create_zone_record(@dnsimple_account, zone_name, attributes) }
         end
       end
 

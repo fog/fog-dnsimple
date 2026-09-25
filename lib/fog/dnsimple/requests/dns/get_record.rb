@@ -13,11 +13,7 @@ module Fog
         #   * body<~Hash>:
         #     * "data"<~Hash> The representation of the record.
         def get_record(zone_name, record_id)
-          request(
-            expects:  200,
-            method:   "GET",
-            path:     "/#{@dnsimple_account}/zones/#{zone_name}/records/#{record_id}"
-          )
+          request { |client| client.zones.zone_record(@dnsimple_account, zone_name, record_id) }
         end
       end
 

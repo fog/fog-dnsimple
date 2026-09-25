@@ -25,7 +25,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "minitest"
   spec.add_development_dependency "minitest-reporters"
+  spec.add_development_dependency "webmock"
 
   spec.add_dependency "fog-core", "~> 2.5"
-  spec.add_dependency "fog-json"
+  spec.add_dependency "dnsimple", "~> 13.0"
 end

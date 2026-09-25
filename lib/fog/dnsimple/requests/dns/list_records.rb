@@ -11,12 +11,7 @@ module Fog
         # @param  query [Hash]
         # @return [Excon::Response]
         def list_records(zone_name, query: {})
-          request(
-            expects: 200,
-            method: "GET",
-            path: "/#{@dnsimple_account}/zones/#{zone_name}/records",
-            query: query
-          )
+          request { |client| client.zones.list_zone_records(@dnsimple_account, zone_name, query: query) }
         end
       end
 

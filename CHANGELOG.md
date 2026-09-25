@@ -6,6 +6,7 @@
 - CHANGED: Moved CI from Travis to GitHub Actions (#9)
 - CHANGED: Minimum fog-core version is now 2.5 (#10)
 - CHANGED: The service class is now `Fog::Dnsimple::DNS`. `Fog::DNS::Dnsimple` remains as an alias (#10)
+- CHANGED: Requests use the dnsimple-ruby client instead of a custom HTTP connection
 
 #### Release 2.1.0
 

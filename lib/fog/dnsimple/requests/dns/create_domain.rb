@@ -12,16 +12,7 @@ module Fog
         #   * body<~Hash>:
         #     * "data"<~Hash> The representation of the domain.
         def create_domain(zone_name)
-          body = {
-            "name" => zone_name
-          }
-
-          request(
-            body:     Fog::JSON.encode(body),
-            expects:  201,
-            method:   "POST",
-            path:     "/#{@dnsimple_account}/domains"
-          )
+          request { |client| client.domains.create_domain(@dnsimple_account, name: zone_name) }
         end
       end
 

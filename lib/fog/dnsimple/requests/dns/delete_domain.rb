@@ -13,11 +13,7 @@ module Fog
         # * zone_name<~String> - zone name
         #
         def delete_domain(zone_name)
-          request(
-            expects:  204,
-            method:   "DELETE",
-            path:     "/#{@dnsimple_account}/domains/#{zone_name}"
-          )
+          request { |client| client.domains.delete_domain(@dnsimple_account, zone_name) }
         end
       end
 
