@@ -1,6 +1,6 @@
 # Fog::Dnsimple
 
-[![Build Status](https://travis-ci.org/fog/fog-dnsimple.svg?branch=master)](https://travis-ci.org/fog/fog-dnsimple)
+[![CI](https://github.com/fog/fog-dnsimple/actions/workflows/ci.yml/badge.svg)](https://github.com/fog/fog-dnsimple/actions/workflows/ci.yml)
 
 
 ## API Version

@@ -1,14 +1,15 @@
 # Changelog
 
+#### Unreleased
+
+- CHANGED: Minimum Ruby version is now 3.2 (#9)
+- CHANGED: Moved CI from Travis to GitHub Actions (#9)
 
 #### Release 2.1.0
 
-- NEW: Added ability to fetch all (non-paginated) domains and records (GH-4, GH-6)
-
+- NEW: Added ability to fetch all (non-paginated) domains and records (#4, #6)
 - FIXED: Added missing "minimum Ruby version" in Gemspec
-
-- CHANGED: Replaced Shindo with Minitest (GH-5)
-
+- CHANGED: Replaced Shindo with Minitest (#5)
 
 #### Release 2.0.0
 
@@ -19,7 +20,6 @@ In order to use API v2 you need an API v2 Oauth token, and the accound ID. The a
 
     https://dnsimple.com/a/1234/domains/example.com
     -> 1234
-
 
 #### Release 1.0.0
 
