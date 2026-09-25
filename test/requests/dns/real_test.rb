@@ -47,6 +47,29 @@ class Fog::Dnsimple::DNS::RealTest < Minitest::Test
     assert_raises(Excon::Error::Unauthorized) { @service.get_domain("example.com") }
   end
 
+  def test_request_timeout
+    stub_request(:get, account_url("/domains/example.com")).to_timeout
+
+    assert_raises(Excon::Error::Timeout) { @service.get_domain("example.com") }
+  end
+
+  def test_request_socket_error
+    stub_request(:get, account_url("/domains/example.com")).to_raise(Errno::ECONNREFUSED)
+
+    assert_raises(Excon::Error::Socket) { @service.get_domain("example.com") }
+  end
+
+  def test_proxy
+    [
+      "http://proxy.example.com:8080",
+      { host: "proxy.example.com", port: 8080 },
+    ].each do |proxy|
+      service = Fog::Dnsimple::DNS::Real.new(dnsimple_token: "token", dnsimple_account: "1010", connection_options: { proxy: proxy })
+
+      assert_equal "proxy.example.com:8080", service.instance_variable_get(:@client).proxy
+    end
+  end
+
   def test_request_without_account
     service = Fog::Dnsimple::DNS::Real.new(dnsimple_token: "token")
 

@@ -60,6 +60,7 @@ module Fog
           @client = ::Dnsimple::Client.new(
             access_token: @dnsimple_token,
             base_url: options[:dnsimple_url],
+            proxy: proxy_address(options.dig(:connection_options, :proxy)),
             user_agent: "#{Fog::Core::Connection.user_agents} fog-dnsimple/#{Fog::Dnsimple::VERSION}"
           )
         end
@@ -77,6 +78,21 @@ module Fog
           raise Excon::Error.status_error({}, excon_response(e.http_response))
         rescue ::Dnsimple::AuthenticationFailed => e
           raise Excon::Error.status_error({}, Excon::Response.new(status: 401, body: { "message" => e.message }))
+        rescue Timeout::Error => e
+          raise Excon::Error::Timeout, e.message
+        rescue SocketError, SystemCallError, IOError, OpenSSL::SSL::SSLError => e
+          raise Excon::Error::Socket.new(e)
+        end
+
+        # Converts an Excon proxy (URL or Hash) to the "host:port" form of dnsimple-ruby.
+        def proxy_address(proxy)
+          case proxy
+          when String
+            uri = URI.parse(proxy)
+            "#{uri.host}:#{uri.port}"
+          when Hash
+            "#{proxy[:host]}:#{proxy[:port]}"
+          end
         end
 
         def excon_response(http_response)
