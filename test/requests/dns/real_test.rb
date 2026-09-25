@@ -107,6 +107,15 @@ class Fog::Dnsimple::DNS::RealTest < Minitest::Test
                      body: { "name" => "www", "type" => "A", "content" => "1.2.3.4", "ttl" => 60 }
   end
 
+  def test_zone_records_use_zone_name
+    stub_api(:post, "/zones/example.com/records", status: 201, body: { "data" => { "id" => 5, "name" => "www" } })
+    zone = Fog::Dnsimple::DNS::Zone.new(id: 512728, domain: "example.com", service: @service)
+
+    record = zone.records.create(name: "www", type: "A", value: "1.2.3.4")
+
+    assert_equal 5, record.id
+  end
+
   def test_list_all_records
     2.times do |index|
       page = index + 1

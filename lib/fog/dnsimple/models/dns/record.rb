@@ -20,7 +20,7 @@ module Fog
         end
 
         def destroy
-          service.delete_record(zone.id, identity)
+          service.delete_record(zone.domain, identity)
           true
         end
 
@@ -35,12 +35,12 @@ module Fog
 
           # decide whether its a new record or update of an existing
           if id.nil?
-            data = service.create_record(zone.id, name, type, value, options)
+            data = service.create_record(zone.domain, name, type, value, options)
           else
             options[:name] = name if name
             options[:content] = value if value
             options[:type] = type if type
-            data = service.update_record(zone.id, id, options)
+            data = service.update_record(zone.domain, id, options)
           end
 
           merge_attributes(data.body["data"])
