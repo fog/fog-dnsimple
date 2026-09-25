@@ -2,50 +2,44 @@
 
 [![CI](https://github.com/fog/fog-dnsimple/actions/workflows/ci.yml/badge.svg)](https://github.com/fog/fog-dnsimple/actions/workflows/ci.yml)
 
-
-## API Version
-
-This library currently uses the [DNSimple API v2](https://developer.dnsimple.com/v2/) 
-and it is compatible with the legacy implementation bundled with the `fog` gem.
-
+This library is the [DNSimple](https://dnsimple.com/) provider for [fog](https://github.com/fog/fog). It uses the [DNSimple API](https://developer.dnsimple.com/) through the [dnsimple-ruby](https://github.com/dnsimple/dnsimple-ruby) client.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'fog-dnsimple'
+gem "fog-dnsimple"
 ```
 
 And then execute:
 
-```
-bundle
+```bash
+bundle install
 ```
 
 Or install it yourself as:
 
-```
+```bash
 gem install fog-dnsimple
 ```
-
 
 ## Usage
 
 Initialize a `Fog::DNS` object using the DNSimple provider.
 
 ```ruby
-dns = Fog::DNS.new({
+dns = Fog::DNS.new(
   provider:         "DNSimple",
   dnsimple_token:   "YOUR_API_TOKEN",
   dnsimple_account: "YOUR_ACCOUNT_ID",
-})
+)
 ```
 
-- `YOUR_API_TOKEN`: This is the API v2 access token. You can create it from your account page: Account > Access Tokens > Account access tokens.
-- `YOUR_ACCOUNT_ID`: This is the account ID. We currently support only the numeric ID (account string identifiers will be supported in the future). The account ID is the numeric ID after the `/a` in the path prefix. For instance, if the account page is `https://dnsimple.com/a/1234/domains`, the account ID is `1234`.
+- `YOUR_API_TOKEN`: the API access token. You can create it from your account page: Account > Access Tokens > Account access tokens.
+- `YOUR_ACCOUNT_ID`: the numeric account ID. It is the number after `/a` in the account URL. For instance, if the account page is `https://dnsimple.com/a/1234/domains`, the account ID is `1234`.
 
-This can then be used like other [Fog DNS](http://fog.io/dns/) providers.
+You can then use it like other fog DNS providers.
 
 ```ruby
 zone = dns.zones.create(
@@ -58,19 +52,24 @@ record = zone.records.create(
 )
 ```
 
-The following configurations are supported:
+The following options are also supported:
 
 ```ruby
-dns = Fog::DNS.new({
-  # Use dnsimple_url to provide a different base URL, e.g. the Sandbox URL
-  dnsimple_url:   "https://api.sandbox.dnsimple.com/",
-})
+dns = Fog::DNS.new(
+  provider:           "DNSimple",
+  dnsimple_token:     "YOUR_API_TOKEN",
+  dnsimple_account:   "YOUR_ACCOUNT_ID",
+  # A different base URL, for example the Sandbox URL
+  dnsimple_url:       "https://api.sandbox.dnsimple.com",
+  # An HTTP proxy
+  connection_options: { proxy: "http://proxy.example.com:8080" },
+)
 ```
 
 ## Contributing
 
-1. Fork it ( https://github.com/fog/fog-dnsimple/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
+1. Fork it (https://github.com/fog/fog-dnsimple/fork)
+2. Create your feature branch (`git switch -c my-new-feature`)
+3. Commit your changes (`git commit -am "Add some feature"`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+5. Create a new Pull Request
