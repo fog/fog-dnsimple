@@ -82,6 +82,8 @@ module Fog
           raise Excon::Error::Timeout, e.message
         rescue SocketError, SystemCallError, IOError, OpenSSL::SSL::SSLError => e
           raise Excon::Error::Socket.new(e)
+        rescue JSON::ParserError => e
+          raise Excon::Error::ResponseParse, e.message
         end
 
         # Converts an Excon proxy (URL or Hash) to the "host:port" form of dnsimple-ruby.
@@ -99,8 +101,15 @@ module Fog
           Excon::Response.new(
             status: http_response.code,
             headers: http_response.response.each_header.to_h,
-            body: http_response.parsed_response || ""
+            body: response_body(http_response)
           )
+        end
+
+        # An error page from a proxy or a load balancer is not JSON.
+        def response_body(http_response)
+          http_response.parsed_response || ""
+        rescue JSON::ParserError
+          http_response.body
         end
 
         def paginate(query: {})

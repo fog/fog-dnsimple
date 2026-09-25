@@ -6,6 +6,7 @@ class Fog::Dnsimple::DNS::RealTest < Minitest::Test
   API_URL = "https://api.dnsimple.com"
 
   def setup
+    Fog::Dnsimple::DNS.setup_requirements
     @service = Fog::Dnsimple::DNS::Real.new(dnsimple_token: "token", dnsimple_account: "1010")
   end
 
@@ -39,6 +40,14 @@ class Fog::Dnsimple::DNS::RealTest < Minitest::Test
     stub_api(:get, "/domains/example.com", status: 404, body: { "message" => "Domain `example.com` not found" })
 
     assert_raises(Excon::Error::NotFound) { @service.get_domain("example.com") }
+  end
+
+  def test_request_error_page
+    stub_request(:get, account_url("/domains/example.com"))
+      .to_return(status: 502, headers: { "Content-Type" => "text/html" }, body: "<html>Bad Gateway</html>")
+
+    error = assert_raises(Excon::Error::BadGateway) { @service.get_domain("example.com") }
+    assert_equal "<html>Bad Gateway</html>", error.response.body
   end
 
   def test_request_unauthorized
