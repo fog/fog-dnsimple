@@ -4,8 +4,8 @@
 
 - CHANGED: Minimum Ruby version is now 3.2 (#9)
 - CHANGED: Moved CI from Travis to GitHub Actions (#9)
-- CHANGED: Minimum fog-core version is now 2.5
-- CHANGED: The service class is now `Fog::Dnsimple::DNS`. `Fog::DNS::Dnsimple` remains as an alias.
+- CHANGED: Minimum fog-core version is now 2.5 (#10)
+- CHANGED: The service class is now `Fog::Dnsimple::DNS`. `Fog::DNS::Dnsimple` remains as an alias (#10)
 
 #### Release 2.1.0
 
