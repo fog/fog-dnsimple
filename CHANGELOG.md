@@ -1,6 +1,6 @@
 # Changelog
 
-#### Unreleased
+#### Release 3.0.0
 
 - FIXED: Record requests use the zone name instead of the zone ID (#7, #11)
 - CHANGED: Minimum Ruby version is now 3.2 (#9)
@@ -8,6 +8,7 @@
 - CHANGED: Minimum fog-core version is now 2.5 (#10)
 - CHANGED: The service class is now `Fog::Dnsimple::DNS`. `Fog::DNS::Dnsimple` remains as an alias (#10)
 - CHANGED: Requests use the dnsimple-ruby client instead of a custom HTTP connection (#11)
+- CHANGED: Removed `Real#reload` and the public `Real#request`. From `connection_options`, only the proxy is used (#11)
 
 #### Release 2.1.0
 
