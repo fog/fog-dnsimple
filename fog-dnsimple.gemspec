@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name = "fog-dnsimple"
   s.version = Fog::Dnsimple::VERSION
   s.authors = ["Simone Carletti"]
-  s.email = ["weppos@weppos.net"]
+  s.email = ["code@simonecarletti.com"]
 
   s.summary = "Module for the 'fog' gem to support DNSimple."
   s.description = "This library can be used as a module for `fog` or as standalone provider to use the DNSimple in applications."
