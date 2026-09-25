@@ -10,12 +10,7 @@ module Fog
         # @param  query [Hash]
         # @return [Excon::Response]
         def list_domains(query: {})
-          request(
-            expects: 200,
-            method: "GET",
-            path: "/#{@dnsimple_account}/domains",
-            query: query
-          )
+          request { |client| client.domains.list_domains(@dnsimple_account, query: query) }
         end
       end
 

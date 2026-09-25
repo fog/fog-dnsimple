@@ -12,13 +12,13 @@ module Fog
         def all
           requires :zone
           clear
-          data = service.list_records(zone.id).body["data"]
+          data = service.list_records(zone.domain).body["data"]
           load(data)
         end
 
         def get(record_id)
           requires :zone
-          data = service.get_record(zone.id, record_id).body["data"]
+          data = service.get_record(zone.domain, record_id).body["data"]
           new(data)
         rescue Excon::Errors::NotFound
           nil

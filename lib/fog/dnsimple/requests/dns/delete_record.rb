@@ -8,11 +8,7 @@ module Fog
         # * zone_name<~String> - zone name
         # * record_id<~String>
         def delete_record(zone_name, record_id)
-          request(
-            expects:  204,
-            method:   "DELETE",
-            path:     "/#{@dnsimple_account}/zones/#{zone_name}/records/#{record_id}"
-          )
+          request { |client| client.zones.delete_zone_record(@dnsimple_account, zone_name, record_id) }
         end
       end
 

@@ -18,14 +18,7 @@ module Fog
         #   * body<~Hash>:
         #     * "data"<~Hash> The representation of the record.
         def update_record(zone_name, record_id, options)
-          body = options
-
-          request(
-            body:     Fog::JSON.encode(body),
-            expects:  200,
-            method:   "PATCH",
-            path:     "/#{@dnsimple_account}/zones/#{zone_name}/records/#{record_id}"
-          )
+          request { |client| client.zones.update_zone_record(@dnsimple_account, zone_name, record_id, options) }
         end
       end
 
