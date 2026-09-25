@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Fog::DNS::Dnsimple::ZonesTest < Minitest::Test
+class Fog::Dnsimple::DNS::ZonesTest < Minitest::Test
   include TestCollectionHelpers
 
   def test_all

@@ -1,6 +1,6 @@
 module Fog
-  module DNS
-    class Dnsimple
+  module Dnsimple
+    class DNS
       class Real
         # Delete the given domain from your account. You may use
         # either the domain ID or the domain name.

@@ -2,8 +2,8 @@ require "fog/core"
 require "fog/json"
 
 module Fog
-  module DNS
-    class Dnsimple < Fog::Service
+  module Dnsimple
+    class DNS < Fog::Service
       recognizes :dnsimple_token, :dnsimple_account, :dnsimple_url
 
       model_path 'fog/dnsimple/models/dns'
@@ -131,4 +131,7 @@ module Fog
       end
     end
   end
+
+  # Keeps the constant from the service::provider format for compatibility.
+  DNS::Dnsimple = Dnsimple::DNS
 end

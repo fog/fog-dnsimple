@@ -2,8 +2,8 @@ require 'fog/core/model'
 require 'fog/dnsimple/models/dns/records'
 
 module Fog
-  module DNS
-    class Dnsimple
+  module Dnsimple
+    class DNS
       class Zone < Fog::Model
         identity :id
 
@@ -18,7 +18,7 @@ module Fog
 
         def records
           @records ||= begin
-            Fog::DNS::Dnsimple::Records.new(
+            Fog::Dnsimple::DNS::Records.new(
               :zone       => self,
               :service => service
             )

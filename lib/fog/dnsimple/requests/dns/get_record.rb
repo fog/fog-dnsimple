@@ -1,6 +1,6 @@
 module Fog
-  module DNS
-    class Dnsimple
+  module Dnsimple
+    class DNS
       class Real
         # Gets record from given domain.
         #

@@ -1,8 +1,8 @@
 require 'fog/core/model'
 
 module Fog
-  module DNS
-    class Dnsimple
+  module Dnsimple
+    class DNS
       class Record < Fog::Model
         identity :id
 
