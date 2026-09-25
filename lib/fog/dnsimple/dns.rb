@@ -1,4 +1,6 @@
 require "fog/core"
+# dnsimple-ruby uses JSON but does not require it.
+require "json"
 require "dnsimple"
 
 module Fog
