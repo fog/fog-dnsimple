@@ -1,6 +1,13 @@
 # Changelog
 
 
+#### Unreleased
+
+- CHANGED: Minimum Ruby version is now 3.2 (GH-9)
+
+- CHANGED: Moved CI from Travis to GitHub Actions (GH-9)
+
+
 #### Release 2.1.0
 
 - NEW: Added ability to fetch all (non-paginated) domains and records (GH-4, GH-6)
